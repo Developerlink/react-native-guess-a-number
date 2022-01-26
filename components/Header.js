@@ -13,14 +13,15 @@ export default function Header(props) {
 const styles = StyleSheet.create({
     header: {
         width: "100%",
-        height: 90,
-        paddingTop: 40,
+        height: 80,
+        paddingVertical: 10,
         backgroundColor: Colors.secondary,
         justifyContent: "center",
         alignItems: "center",
     },
     headerTitle: {
         color: "black",
-        fontSize: 18
+        fontSize: 30,
+        fontWeight: "bold"
     }
 });
