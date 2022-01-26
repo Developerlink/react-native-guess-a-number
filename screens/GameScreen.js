@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button, Alert } from "react-native";
 import Card from "../components/Card";
 import Input from "../components/Input";
 import Colors from "../constants/colors";
+import DefaultStyles from "../constants/default-styles";
 
 let numberOfTries = 0;
 
@@ -24,7 +25,6 @@ export default function GameScreen(props) {
   const [playerGuess, setPlayerGuess] = useState("");
   const [playerNumberOfTries, setPlayerNumberOfTries] = useState(0);
   const [playerResultMessage, setPlayerResultMessage] = useState();
-  const [computerNumberOfTries, setComputerNumberOfTries] = useState(0);
 
   const inputPlayerGuessChanged = (inputText) => {
     setPlayerGuess(inputText.replace(/[^0-9]/g, ""));
@@ -51,9 +51,10 @@ export default function GameScreen(props) {
   };
 
   const computerGuessHandler = () => {
+    if (playerResultMessage !== "That is correct!") return;
     const result = computerGuess(1, 100, props.userChoice);
-    setComputerNumberOfTries(result);
     numberOfTries = 0;
+    props.onGameOver({playerNumberOfTries, computerNumberOfTries: result})
   };
 
   return (
@@ -69,6 +70,7 @@ export default function GameScreen(props) {
           onChangeText={inputPlayerGuessChanged}
           value={playerGuess}
           onSubmitEditing={userGuessHandler}
+          autoFocus
         />
         <View style={styles.guessButton}>
           <Button title="Guess" onPress={userGuessHandler} />
@@ -89,12 +91,7 @@ export default function GameScreen(props) {
             title="Let the computer try!"
             onPress={computerGuessHandler}
           />
-        </View>
-        {computerNumberOfTries > 0 ? 
-          <Card style={styles.buttonContainer}>
-            <Text>Your number of tries: {playerNumberOfTries}</Text>
-            <Text>Computer's number of tries: {computerNumberOfTries}</Text>          
-        </Card> : <Text></Text>}
+        </View>        
       </View>
     </View>
   );
@@ -113,16 +110,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   nonPlayerContainer: {
-    flex: 1,
+    flex: 2,
     paddingVertical: 20,
     borderTopWidth: 2,
     borderTopColor: Colors.secondary,
     width: "80%",
     alignItems: "center",
-  },
-  resultContainer: {
-    flex: 1,
-    paddingVertical: 20,
   },
   input: {
     fontSize: 50,
