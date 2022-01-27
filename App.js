@@ -8,23 +8,28 @@ import StartGameScreen from "./screens/StartGameScreen";
 import GameOverScreen from "./screens/GameOverScreen";
 import * as Font from "expo-font";
 
-const fetchFonts = () => {
-  Font.loadAsync({
+const fetchFonts = async () => {
+  await Font.loadAsync({
     "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
     "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
   });
 };
 
+const DUMMY_RESULTS = {
+  playerNumberOfTries: 2,
+  computerNumberOfTries: 6,
+};
+
 export default function App() {
   const [userNumber, setUserNumber] = useState(0);
-  const [results, setResults] = useState({});
-  const [dataIsLoaded, setDataIsLoaded] = useState(false);
+  const [results, setResults] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
-  if (!dataIsLoaded) {
+  if (isLoading) {
     return (
       <AppLoading
         startAsync={fetchFonts}
-        onFinish={() => setDataIsLoaded(true)}
+        onFinish={() => setIsLoading(false)}
         onError={(error) => console.log(error)}
       />
     );

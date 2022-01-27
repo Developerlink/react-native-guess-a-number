@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import Colors from "../constants/colors";
 
 export default function NumberContainer(props) {
@@ -22,6 +22,11 @@ const styles = StyleSheet.create({
     },
     number: {
         color: Colors.accent,
-        fontSize: 22
+        fontSize: 
+        Dimensions.get("window").height < 500
+        ? 16
+        : Dimensions.get("window").height < 800
+        ? 24
+        : 32
     }
 })

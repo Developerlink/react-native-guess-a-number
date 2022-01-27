@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Button, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  Alert,
+  ScrollView,
+} from "react-native";
 import Card from "../components/Card";
 import Input from "../components/Input";
 import Colors from "../constants/colors";
 import DefaultStyles from "../constants/default-styles";
+import { Ionicons } from "@expo/vector-icons";
 
 let numberOfTries = 0;
 
@@ -15,9 +23,9 @@ const computerGuess = (min, max, correctNumber) => {
   if (randNumb === correctNumber) {
     return numberOfTries;
   } else if (randNumb > correctNumber) {
-      return computerGuess(min, randNumb, correctNumber);
+    return computerGuess(min, randNumb, correctNumber);
   } else {
-      return computerGuess(randNumb, max, correctNumber);
+    return computerGuess(randNumb, max, correctNumber);
   }
 };
 
@@ -25,6 +33,7 @@ export default function GameScreen(props) {
   const [playerGuess, setPlayerGuess] = useState("");
   const [playerNumberOfTries, setPlayerNumberOfTries] = useState(0);
   const [playerResultMessage, setPlayerResultMessage] = useState();
+  const [pastGuesses, setPastGuesses] = useState([]);
 
   const inputPlayerGuessChanged = (inputText) => {
     setPlayerGuess(inputText.replace(/[^0-9]/g, ""));
@@ -45,55 +54,86 @@ export default function GameScreen(props) {
       setPlayerResultMessage("That is correct!");
     } else if (chosenNumber > props.userChoice) {
       setPlayerResultMessage("It is lower than that!");
+      setPastGuesses((prevState) => [
+        `${playerGuess} - too high`,
+        ...prevState,
+      ]);
     } else {
       setPlayerResultMessage("It is higher than that!");
+      setPastGuesses((prevState) => [`${playerGuess} - too low`, ...prevState]);
     }
+    setPlayerGuess("");
   };
 
   const computerGuessHandler = () => {
     if (playerResultMessage !== "That is correct!") return;
     const result = computerGuess(1, 100, props.userChoice);
     numberOfTries = 0;
-    props.onGameOver({playerNumberOfTries, computerNumberOfTries: result})
+    props.onGameOver({ playerNumberOfTries, computerNumberOfTries: result });
   };
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.playerContainer}>
-        <Input
-          style={styles.input}
-          blurOnSubmit
-          autoCapitalize="none"
-          autoCorrect={false}
-          keyboardType="number-pad" // * ios
-          maxLength={2}
-          onChangeText={inputPlayerGuessChanged}
-          value={playerGuess}
-          onSubmitEditing={userGuessHandler}
-          autoFocus
-        />
-        <View style={styles.guessButton}>
-          <Button title="Guess" onPress={userGuessHandler} />
-        </View>
-        <Text
-          style={
-            playerResultMessage === "That is correct!"
-              ? styles.playerResultTextSuccess
-              : styles.playerResultTextFail
-          }
-        >
-          {playerResultMessage}
-        </Text>
-      </View>
-      <View style={styles.nonPlayerContainer}>
-        <View style={styles.computerTryButton}>
-          <Button
-            title="Let the computer try!"
-            onPress={computerGuessHandler}
+    <ScrollView>
+      <View style={styles.screen}>
+        <View style={styles.playerContainer}>
+          <Input
+            style={styles.input}
+            blurOnSubmit
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardType="number-pad" // * ios
+            maxLength={2}
+            onChangeText={inputPlayerGuessChanged}
+            value={playerGuess}
+            onSubmitEditing={userGuessHandler}
+            autoFocus
           />
-        </View>        
+          <View style={styles.guessButton}>
+            <Button title="Guess" onPress={userGuessHandler} />
+          </View>
+          <Text
+            style={
+              playerResultMessage === "That is correct!"
+                ? styles.playerResultTextSuccess
+                : styles.playerResultTextFail
+            }
+          >
+            {playerResultMessage}{" "}
+            {playerResultMessage &&
+              playerResultMessage === "That is correct!" && (
+                <Ionicons
+                  name="ios-happy-outline"
+                  color="green"
+                  size={24}
+                />
+              )}
+            {playerResultMessage &&
+              playerResultMessage !== "That is correct!" && (
+                <Ionicons
+                  name="ios-sad-outline"
+                  color="red"
+                  size={24}
+                />
+              )}
+          </Text>
+          <View style={styles.guessesContainer}>
+            {pastGuesses.map((guess, index) => (
+              <View key={index} style={styles.guessItem}>
+                <Text style={{textAlign: "center"}}>{guess}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+        <View style={styles.nonPlayerContainer}>
+          <View style={styles.computerTryButton}>
+            <Button
+              title="Let the computer try!"
+              onPress={computerGuessHandler}
+            />
+          </View>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -104,13 +144,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   playerContainer: {
-    flex: 1,
     paddingVertical: 20,
     justifyContent: "space-between",
     alignItems: "center",
   },
   nonPlayerContainer: {
-    flex: 2,
     paddingVertical: 20,
     borderTopWidth: 2,
     borderTopColor: Colors.secondary,
@@ -130,10 +168,12 @@ const styles = StyleSheet.create({
   playerResultTextFail: {
     textAlign: "center",
     color: "red",
+    marginVertical: 10
   },
   playerResultTextSuccess: {
     textAlign: "center",
     color: "green",
+    marginVertical: 10
   },
   computerTryButton: {
     width: "60%",
@@ -144,4 +184,13 @@ const styles = StyleSheet.create({
     width: 300,
     maxWidth: "80%",
   },
+  guessesContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    marginHorizontal: 40,
+  },
+  guessItem: {
+    flexBasis: "30%"
+  }
 });
