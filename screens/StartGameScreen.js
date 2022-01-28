@@ -17,32 +17,93 @@ import NumberContainer from "../components/NumberContainer";
 import BodyText from "../components/BodyText";
 import MainButton from "../components/MainButton";
 import { KeyboardAvoidingView } from "react-native";
+import * as ScreenOrientation from "expo-screen-orientation";
 
 export default function StartGameScreen(props) {
+  //ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+
   const [enteredValue, setEnteredValue] = useState("");
   const [confirmed, setConfirmed] = useState(true);
   const [selectedNumber, setSelectedNumber] = useState();
-  const [bodyStyle, setBodyStyle] = useState();
+  const [titleStyle, setTitleStyle] = useState();
+  const [inputContainerStyle, setInputContainerStyle] = useState();
+  const [confirmTextStyle, setConfirmTextStyle] = useState();
+  const [summaryContainerStyle, setSummaryContainerStyle] = useState();
+  const [numberStyle, setNumberStyle] = useState();
+  const [buttonSizeStyle, setButtonSizeStyle] = useState();
+  const [buttonFontSizeStyle, setButtonFontSizeStyle] = useState();
 
-  useEffect(()=>{
+  useEffect(() => {
     const updateLayout = () => {
-      setBodyStyle({
-        flex: 1,
-        padding: Dimensions.get("window").height < 500 ? 5 : 10,
-        alignItems: "center",
-      });
-    }
+      if (Dimensions.get("screen").height < 600) {
+        setTitleStyle({
+          marginVertical: 0,
+        });
+        setInputContainerStyle({
+          marginTop: 5
+        })
+      } else {
+        setTitleStyle({
+          marginVertical: 10,
+        });
+        setInputContainerStyle({
+          marginTop: 20
+        })
+      }
 
-    Dimensions.addEventListener('change', updateLayout);
-    
+      setConfirmTextStyle({
+        fontSize:
+          Dimensions.get("window").height < 500
+            ? 14
+            : Dimensions.get("window").height < 800
+            ? 20
+            : 30,
+      });
+      setNumberStyle({
+        fontSize:
+          Dimensions.get("window").height < 500
+            ? 16
+            : Dimensions.get("window").height < 800
+            ? 24
+            : 32,
+      });
+      setSummaryContainerStyle({
+        marginTop:
+          Dimensions.get("screen").height < 500
+            ? 5
+            : Dimensions.get("screen").height < 700
+            ? 30
+            : 80,
+        paddingVertical:
+          Dimensions.get("screen").height < 500
+            ? 8
+            : Dimensions.get("screen").height < 800
+            ? 20
+            : 30,
+      });
+      setButtonSizeStyle({
+        paddingVertical:
+          Dimensions.get("screen").height < 500
+            ? 8
+            : Dimensions.get("screen").height < 800
+            ? 12
+            : 12,
+      });
+      setButtonFontSizeStyle({
+        fontSize:
+          Dimensions.get("screen").height < 500
+            ? 16
+            : Dimensions.get("screen").height < 800
+            ? 20
+            : 30,
+      });
+    };
+
+    Dimensions.addEventListener("change", updateLayout);
+
     return () => {
       Dimensions.removeEventListener("change", updateLayout);
-      Alert.alert(
-        "Screen has rotated",
-        "Hopefully this triggers correctly...",
-        [{ text: "Ok", style: "destructive", onPress: resetInputHandler }]
-      );
-    }
+    };
   });
 
   const numberInputHandler = (inputText) => {
@@ -76,10 +137,18 @@ export default function StartGameScreen(props) {
 
   if (confirmed) {
     confirmedOutput = (
-      <Card style={styles.summaryContainer}>
-        <Text style={styles.confirmText}>You selected</Text>
-        <NumberContainer>55{selectedNumber}</NumberContainer>
-        <MainButton onPress={() => props.onStartGame(selectedNumber)}>
+      <Card style={{ ...styles.summaryContainer, ...summaryContainerStyle }}>
+        <Text style={{ ...styles.confirmText, ...confirmTextStyle }}>
+          You selected
+        </Text>
+        <NumberContainer style={{ ...styles.number, ...numberStyle }}>
+          55{selectedNumber}
+        </NumberContainer>
+        <MainButton
+          buttonSize={{ ...styles.buttonSize, ...buttonSizeStyle }}
+          buttonFontSize={{ ...styles.buttonFontSize, ...buttonFontSizeStyle }}
+          onPress={() => props.onStartGame(selectedNumber)}
+        >
           Start game
         </MainButton>
       </Card>
@@ -87,50 +156,51 @@ export default function StartGameScreen(props) {
   }
 
   return (
-    <ScrollView>
-
-    <KeyboardAvoidingView
-      style={styles.screen}
-      behavior="padding"
-      keyboardVerticalOffset={30}
+    <ScrollView style={styles.screen}>
+      <KeyboardAvoidingView
+        style={styles.screen}
+        behavior="padding"
+        keyboardVerticalOffset={30}
       >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={bodyStyle}>
-          <Text style={styles.title}>Start a new Game!</Text>
-          <Card style={styles.inputContainer}>
-            <BodyText>Select a number between 1 - 99</BodyText>
-            <Input
-              style={styles.input}
-              blurOnSubmit
-              autoCapitalize="none"
-              autoCorrect={false}
-              keyboardType="number-pad" // * ios
-              maxLength={2}
-              value={enteredValue}
-              onChangeText={numberInputHandler}
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.body}>
+            <Text style={{ ...styles.title, ...titleStyle }}>
+              Start a new Game!
+            </Text>
+            <Card style={{...styles.inputContainer, ...inputContainerStyle}}>
+              <BodyText>Select a number between 1 - 99</BodyText>
+              <Input
+                style={styles.input}
+                blurOnSubmit
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="number-pad" // * ios
+                maxLength={2}
+                value={enteredValue}
+                onChangeText={numberInputHandler}
               />
-            <View style={styles.buttonContainer}>
-              <View style={styles.button}>
-                <Button
-                  title="Reset"
-                  onPress={resetInputHandler}
-                  color={Colors.primary}
+              <View style={styles.buttonContainer}>
+                <View style={styles.button}>
+                  <Button
+                    title="Reset"
+                    onPress={resetInputHandler}
+                    color={Colors.primary}
                   />
-              </View>
-              <View style={styles.button}>
-                <Button
-                  title="Confirm"
-                  onPress={confirmInputHandler}
-                  color={Colors.accent}
+                </View>
+                <View style={styles.button}>
+                  <Button
+                    title="Confirm"
+                    onPress={confirmInputHandler}
+                    color={Colors.accent}
                   />
+                </View>
               </View>
-            </View>
-          </Card>
-          {confirmedOutput}
-        </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
-</ScrollView>
+            </Card>
+            {confirmedOutput}
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
 
@@ -138,18 +208,18 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
-  // body: {
-  //   flex: 1,
-  //   padding: Dimensions.get("window").height < 500 ? 5 : 10,
-  //   alignItems: "center",
-  // },
+  body: {
+    flex: 1,
+    padding: Dimensions.get("window").height < 500 ? 5 : 10,
+    alignItems: "center",
+  },
   title: {
     fontSize: 20,
-    marginVertical: Dimensions.get("window").height < 500 ? 0 : 10,
+    marginVertical: Dimensions.get("screen").height < 600 ? 0 : 10,
     fontFamily: "open-sans-bold",
   },
   inputContainer: {
-    marginTop: Dimensions.get("window").height < 500 ? 5 : 20,
+    marginTop: Dimensions.get("screen").height < 500 ? 5 : 20,
     width: "80%",
     minWidth: 300,
     alignItems: "center",
@@ -168,25 +238,50 @@ const styles = StyleSheet.create({
     width: 50,
     textAlign: "center",
   },
-  summaryContainer: {
-    marginTop:
-      Dimensions.get("window").height < 500
-        ? 5
-        : Dimensions.get("window").height < 800
-        ? 60
-        : 80,
-    alignItems: "center",
-    paddingVertical: 
-    Dimensions.get("window").height < 500
-        ? 8
-        : Dimensions.get("window").height < 800
-        ? 20
-        : 30
-  },
   confirmText: {
     fontSize:
       Dimensions.get("window").height < 500
         ? 14
+        : Dimensions.get("window").height < 800
+        ? 20
+        : 30,
+  },
+  summaryContainer: {
+    alignItems: "center",
+    marginTop:
+      Dimensions.get("screen").height < 500
+        ? 5
+        : Dimensions.get("screen").height < 700
+        ? 60
+        : 80,
+    paddingVertical:
+      Dimensions.get("screen").height < 500
+        ? 8
+        : Dimensions.get("screen").height < 800
+        ? 20
+        : 30,
+  },
+  number: {
+    color: Colors.accent,
+    fontSize:
+      Dimensions.get("window").height < 500
+        ? 16
+        : Dimensions.get("window").height < 800
+        ? 24
+        : 32,
+  },
+  buttonSize: {
+    paddingVertical:
+      Dimensions.get("window").height < 500
+        ? 8
+        : Dimensions.get("window").height < 800
+        ? 12
+        : 12,
+  },
+  buttonFontSize: {
+    fontSize:
+      Dimensions.get("window").height < 500
+        ? 16
         : Dimensions.get("window").height < 800
         ? 20
         : 30,

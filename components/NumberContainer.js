@@ -5,7 +5,7 @@ import Colors from "../constants/colors";
 export default function NumberContainer(props) {
   return (
     <View style={styles.container}>
-      <Text style={styles.number}>{props.children}</Text>
+      <Text style={props.style}>{props.children}</Text>
     </View>
   );
 }
@@ -20,13 +20,4 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
-    number: {
-        color: Colors.accent,
-        fontSize: 
-        Dimensions.get("window").height < 500
-        ? 16
-        : Dimensions.get("window").height < 800
-        ? 24
-        : 32
-    }
 })
