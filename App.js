@@ -7,6 +7,7 @@ import GameScreen from "./screens/GameScreen";
 import StartGameScreen from "./screens/StartGameScreen";
 import GameOverScreen from "./screens/GameOverScreen";
 import * as Font from "expo-font";
+import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 
 const fetchFonts = async () => {
   await Font.loadAsync({
@@ -21,7 +22,7 @@ const DUMMY_RESULTS = {
 };
 
 export default function App() {
-  const [userNumber, setUserNumber] = useState(0);
+  const [userNumber, setUserNumber] = useState(55);
   const [results, setResults] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -59,6 +60,7 @@ export default function App() {
 
   return (
     <View style={styles.screen}>
+      <StatusBar style="auto" />
       <Header title="Guess a number" />
       {content}
     </View>

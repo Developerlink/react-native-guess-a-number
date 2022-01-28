@@ -6,6 +6,7 @@ import {
   Button,
   Alert,
   ScrollView,
+  Dimensions
 } from "react-native";
 import Card from "../components/Card";
 import Input from "../components/Input";
@@ -29,11 +30,21 @@ const computerGuess = (min, max, correctNumber) => {
   }
 };
 
+const DUMMY_TRIES = [
+  "14 - too low",
+  "24 - too low",
+  "84 - too high",
+  "75 - too high",
+  "34 - too low",
+  "67 - too high",
+  "57 - too high",
+]
+
 export default function GameScreen(props) {
   const [playerGuess, setPlayerGuess] = useState("");
   const [playerNumberOfTries, setPlayerNumberOfTries] = useState(0);
   const [playerResultMessage, setPlayerResultMessage] = useState();
-  const [pastGuesses, setPastGuesses] = useState([]);
+  const [pastGuesses, setPastGuesses] = useState(DUMMY_TRIES);
 
   const inputPlayerGuessChanged = (inputText) => {
     setPlayerGuess(inputText.replace(/[^0-9]/g, ""));
@@ -184,13 +195,13 @@ const styles = StyleSheet.create({
     width: 300,
     maxWidth: "80%",
   },
-  guessesContainer: {
+  guessesContainer: {    
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-around",
+    justifyContent: "flex-start",
     marginHorizontal: 40,
   },
   guessItem: {
-    flexBasis: "30%"
+    width: Dimensions.get("window").width / 3
   }
 });

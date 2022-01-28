@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import Colors from "../constants/colors";
 
 export default function Header(props) {
@@ -11,17 +11,27 @@ export default function Header(props) {
 }
 
 const styles = StyleSheet.create({
-    header: {
-        width: "100%",
-        height: 80,
-        paddingVertical: 10,
-        backgroundColor: Colors.secondary,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    headerTitle: {
-        color: "black",
-        fontSize: 30,
-        fontFamily: "open-sans-bold"
-    }
+  header: {
+    width: "100%",
+    height:
+      Dimensions.get("screen").height < 500
+        ? 50
+        : Dimensions.get("screen").height < 800
+        ? 70
+        : 80,
+        paddingTop: 20,
+    paddingBottom: 10,
+    backgroundColor: Colors.secondary,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  headerTitle: {
+    color: "black",
+    fontSize: Dimensions.get("screen").height < 500
+        ? 16
+        : Dimensions.get("screen").height < 800
+        ? 24
+        : 32,
+    fontFamily: "open-sans-bold",
+  },
 });

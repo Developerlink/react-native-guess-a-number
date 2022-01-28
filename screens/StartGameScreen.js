@@ -23,7 +23,7 @@ export default function StartGameScreen(props) {
   //ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
 
   const [enteredValue, setEnteredValue] = useState("");
-  const [confirmed, setConfirmed] = useState(true);
+  const [confirmed, setConfirmed] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState();
   const [titleStyle, setTitleStyle] = useState();
   const [inputContainerStyle, setInputContainerStyle] = useState();
@@ -142,7 +142,7 @@ export default function StartGameScreen(props) {
           You selected
         </Text>
         <NumberContainer style={{ ...styles.number, ...numberStyle }}>
-          55{selectedNumber}
+          {selectedNumber}
         </NumberContainer>
         <MainButton
           buttonSize={{ ...styles.buttonSize, ...buttonSizeStyle }}
