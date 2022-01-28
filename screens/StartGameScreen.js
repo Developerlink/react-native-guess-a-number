@@ -40,15 +40,15 @@ export default function StartGameScreen(props) {
           marginVertical: 0,
         });
         setInputContainerStyle({
-          marginTop: 5
-        })
+          marginTop: 5,
+        });
       } else {
         setTitleStyle({
           marginVertical: 10,
         });
         setInputContainerStyle({
-          marginTop: 20
-        })
+          marginTop: 20,
+        });
       }
 
       setConfirmTextStyle({
@@ -167,7 +167,7 @@ export default function StartGameScreen(props) {
             <Text style={{ ...styles.title, ...titleStyle }}>
               Start a new Game!
             </Text>
-            <Card style={{...styles.inputContainer, ...inputContainerStyle}}>
+            <Card style={{ ...styles.inputContainer, ...inputContainerStyle }}>
               <BodyText>Select a number between 1 - 99</BodyText>
               <Input
                 style={styles.input}

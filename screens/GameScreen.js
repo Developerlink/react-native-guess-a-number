@@ -44,7 +44,7 @@ export default function GameScreen(props) {
   const [playerGuess, setPlayerGuess] = useState("");
   const [playerNumberOfTries, setPlayerNumberOfTries] = useState(0);
   const [playerResultMessage, setPlayerResultMessage] = useState();
-  const [pastGuesses, setPastGuesses] = useState(DUMMY_TRIES);
+  const [pastGuesses, setPastGuesses] = useState([]);
 
   const inputPlayerGuessChanged = (inputText) => {
     setPlayerGuess(inputText.replace(/[^0-9]/g, ""));

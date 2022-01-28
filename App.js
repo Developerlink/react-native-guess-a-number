@@ -22,8 +22,8 @@ const DUMMY_RESULTS = {
 };
 
 export default function App() {
-  const [userNumber, setUserNumber] = useState(55);
-  const [results, setResults] = useState();
+  const [userNumber, setUserNumber] = useState(0);
+  const [results, setResults] = useState(DUMMY_RESULTS);
   const [isLoading, setIsLoading] = useState(true);
 
   if (isLoading) {
