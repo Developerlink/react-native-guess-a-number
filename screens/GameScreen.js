@@ -6,7 +6,7 @@ import {
   Button,
   Alert,
   ScrollView,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import Card from "../components/Card";
 import Input from "../components/Input";
@@ -38,7 +38,21 @@ const DUMMY_TRIES = [
   "34 - too low",
   "67 - too high",
   "57 - too high",
-]
+  "57 - too high",
+  "57 - too high",
+  "57 - too high",
+  "57 - too high",
+  "57 - too high",
+  "57 - too high",
+  "57 - too high",
+  "57 - too high",
+  "57 - too high",
+  "57 - too high",
+  "57 - too high",
+  "57 - too high",
+  "57 - too high",
+  "57 - too high",
+];
 
 export default function GameScreen(props) {
   const [playerGuess, setPlayerGuess] = useState("");
@@ -112,25 +126,17 @@ export default function GameScreen(props) {
             {playerResultMessage}{" "}
             {playerResultMessage &&
               playerResultMessage === "That is correct!" && (
-                <Ionicons
-                  name="ios-happy-outline"
-                  color="green"
-                  size={24}
-                />
+                <Ionicons name="ios-happy-outline" color="green" size={24} />
               )}
             {playerResultMessage &&
               playerResultMessage !== "That is correct!" && (
-                <Ionicons
-                  name="ios-sad-outline"
-                  color="red"
-                  size={24}
-                />
+                <Ionicons name="ios-sad-outline" color="red" size={24} />
               )}
           </Text>
           <View style={styles.guessesContainer}>
             {pastGuesses.map((guess, index) => (
               <View key={index} style={styles.guessItem}>
-                <Text style={{textAlign: "center"}}>{guess}</Text>
+                <Text style={{ textAlign: "center" }}>{guess}</Text>
               </View>
             ))}
           </View>
@@ -171,7 +177,7 @@ const styles = StyleSheet.create({
     height: 50,
     marginBottom: 20,
     textAlign: "center",
-    width: 80,
+    minWidth: 50,
   },
   guessButton: {
     width: 100,
@@ -179,12 +185,12 @@ const styles = StyleSheet.create({
   playerResultTextFail: {
     textAlign: "center",
     color: "red",
-    marginVertical: 10
+    marginVertical: 10,
   },
   playerResultTextSuccess: {
     textAlign: "center",
     color: "green",
-    marginVertical: 10
+    marginVertical: 10,
   },
   computerTryButton: {
     width: "60%",
@@ -195,13 +201,13 @@ const styles = StyleSheet.create({
     width: 300,
     maxWidth: "80%",
   },
-  guessesContainer: {    
+  guessesContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "flex-start",
     marginHorizontal: 40,
   },
   guessItem: {
-    width: Dimensions.get("window").width / 3
-  }
+    width: Dimensions.get("window").width / 3,
+  },
 });

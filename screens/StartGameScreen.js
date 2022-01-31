@@ -235,8 +235,9 @@ const styles = StyleSheet.create({
     width: "40%",
   },
   input: {
-    width: 50,
+    minWidth: 50,
     textAlign: "center",
+    fontSize: 50
   },
   confirmText: {
     fontSize:
