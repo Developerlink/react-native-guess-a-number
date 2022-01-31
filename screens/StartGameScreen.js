@@ -161,7 +161,7 @@ export default function StartGameScreen(props) {
         style={styles.screen}
         behavior="padding"
         keyboardVerticalOffset={30}
-      >
+        >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.body}>
             <Text style={{ ...styles.title, ...titleStyle }}>
@@ -178,21 +178,21 @@ export default function StartGameScreen(props) {
                 maxLength={2}
                 value={enteredValue}
                 onChangeText={numberInputHandler}
-              />
+                />
               <View style={styles.buttonContainer}>
                 <View style={styles.button}>
                   <Button
                     title="Reset"
                     onPress={resetInputHandler}
                     color={Colors.primary}
-                  />
+                    />
                 </View>
                 <View style={styles.button}>
                   <Button
                     title="Confirm"
                     onPress={confirmInputHandler}
                     color={Colors.accent}
-                  />
+                    />
                 </View>
               </View>
             </Card>

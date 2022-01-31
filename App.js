@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import AppLoading from "expo-app-loading";
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import Header from "./components/Header";
 import GameScreen from "./screens/GameScreen";
 import StartGameScreen from "./screens/StartGameScreen";
@@ -22,7 +22,7 @@ const DUMMY_RESULTS = {
 };
 
 export default function App() {
-  const [userNumber, setUserNumber] = useState(55);
+  const [userNumber, setUserNumber] = useState(0);
   const [results, setResults] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -59,11 +59,11 @@ export default function App() {
   }
 
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.screen}>
       <StatusBar style="auto" />
       <Header title="Guess a number" />
       {content}
-    </View>
+    </SafeAreaView>
   );
 }
 
